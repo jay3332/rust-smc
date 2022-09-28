@@ -308,7 +308,7 @@ macro_rules! def_float {
                     let mut buf: [u8; 4] = Default::default();
                     let shortened = &bytes.0[..4];
                     buf.copy_from_slice(shortened);
-                    f32::from_le_bytes() as $t
+                    f32::from_le_bytes(buf) as $t
                 } else {
                     panic!(
                         concat!("Cannot convert {:?} to ", stringify!($t)),
