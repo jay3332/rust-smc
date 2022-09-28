@@ -19,6 +19,7 @@ const TYPE_U32: FourCharCode = four_char_code!("ui32");
 const TYPE_FPE2: FourCharCode = four_char_code!("fpe2");
 const TYPE_SP78: FourCharCode = four_char_code!("sp78");
 const TYPE_FAN: FourCharCode = four_char_code!("{fds");
+const TYPE_FLT: FourCharCode = four_char_code!("flt ");
 
 fn read_string(buffer: *const u8, max: usize) -> String {
     let len = match unsafe { slice::from_raw_parts(buffer, max) }
