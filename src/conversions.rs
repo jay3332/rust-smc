@@ -305,8 +305,10 @@ macro_rules! def_float {
                     (i16::from_be(unsafe { *(&bytes.0[0] as *const _ as *const i16) }) as $t)
                         / 256.0
                 } else if data_type.id == TYPE_FLT {
-                    println!("{:?}", bytes);
-                    <$t>::from_be_bytes(unsafe { *(&bytes.0 as *const _ as *const _) })
+                    let mut buf: [u8; 4] = Default::default();
+                    let shortened = &bytes.0[..4];
+                    buf.copy_from_slice(shortened);
+                    f32::from_le_bytes() as $t
                 } else {
                     panic!(
                         concat!("Cannot convert {:?} to ", stringify!($t)),
