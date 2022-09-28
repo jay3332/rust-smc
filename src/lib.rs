@@ -21,7 +21,7 @@ use four_char_code::{four_char_code, FourCharCode};
 use libc::{sysctl, CTL_HW};
 
 #[derive(Default, Debug, Copy, Clone)]
-pub struct SMCBytes([u8; 32]); // 32
+pub struct SMCBytes(pub(crate) [u8; 32]); // 32
 
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq)]
 #[repr(C)]

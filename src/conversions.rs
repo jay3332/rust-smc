@@ -35,15 +35,6 @@ fn read_string(buffer: *const u8, max: usize) -> String {
         .to_string()
 }
 
-// fn write_string(buffer: *mut u8, value: &str, max: usize) {
-//     let len = if value.len() > max { max } else { value.len() };
-//     unsafe {
-//         memcpy(buffer as *mut c_void, value.as_ptr() as *const c_void, len);
-//         if max > len {
-//             memset(buffer.add(len) as *mut c_void, 32, max - len);
-//         }
-//     }
-// }
 
 pub trait SMCType {
     fn to_smc(&self, data_type: DataType) -> SMCBytes;
@@ -281,15 +272,14 @@ macro_rules! def_float {
                     }
                     res
                 } else if data_type.id == TYPE_FLT {
-                    let mut res: SMCBytes = Default::default();
-                    unsafe {
-                        memcpy(
-                            &mut res as *mut _ as *mut c_void,
-                            &self as *const _ as *const c_void,
-                            std::mem::size_of::<u16>(),
-                        );
-                    }
-                    res
+                    let mut buf: [u8; 32] = Default::default();
+                    let bytes = self.to_le_bytes();
+                    buf[0] = bytes[0];
+                    buf[1] = bytes[1];
+                    buf[2] = bytes[2];
+                    buf[3] = bytes[3];
+
+                    SMCBytes(buf)
                 } else {
                     panic!(
                         concat!("Cannot convert ", stringify!($t), " to {:?}"),
