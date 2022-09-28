@@ -134,7 +134,7 @@ const MACH_PORT_NULL: mach_port_t = 0 as mach_port_t;
 const kIOMasterPortDefault: mach_port_t = MACH_PORT_NULL;
 
 const TYPE_SP78: FourCharCode = four_char_code!("sp78");
-const TYPE_FLT: FourChatCode = four_char_code!("flt ");
+const TYPE_FLT: FourCharCode = four_char_code!("flt ");
 
 const HW_PACKAGES: i32 = 125;
 const HW_PHYSICALCPU: i32 = 101;
