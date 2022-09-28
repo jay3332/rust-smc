@@ -280,6 +280,16 @@ macro_rules! def_float {
                         );
                     }
                     res
+                } else if data_type.id == TYPE_FLT {
+                    let mut res: SMCBytes = Default::default();
+                    unsafe {
+                        memcpy(
+                            &mut res as *mut _ as *mut c_void,
+                            &self as *const _ as *const c_void,
+                            std::mem::size_of::<u16>(),
+                        );
+                    }
+                    res
                 } else {
                     panic!(
                         concat!("Cannot convert ", stringify!($t), " to {:?}"),
@@ -294,6 +304,8 @@ macro_rules! def_float {
                 } else if data_type.id == TYPE_SP78 {
                     (i16::from_be(unsafe { *(&bytes.0[0] as *const _ as *const i16) }) as $t)
                         / 256.0
+                } else if data_type.id == TYPE_FLT {
+                    <$t>::from_be(unsafe { *(&bytes.0[0] as *const _ as *const $t) })
                 } else {
                     panic!(
                         concat!("Cannot convert {:?} to ", stringify!($t)),
