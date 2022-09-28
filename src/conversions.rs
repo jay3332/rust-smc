@@ -305,7 +305,7 @@ macro_rules! def_float {
                     (i16::from_be(unsafe { *(&bytes.0[0] as *const _ as *const i16) }) as $t)
                         / 256.0
                 } else if data_type.id == TYPE_FLT {
-                    println!("{:?} {:b}", bytes, u128::from_be_bytes(bytes.0.clone()[..16]));
+                    println!("{:?} {:b}", bytes, u128::from_be_bytes(bytes.0.clone()[..16] as _));
                     <$t>::from_be_bytes(unsafe { *(&bytes.0 as *const _ as *const _) })
                 } else {
                     panic!(
