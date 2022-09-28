@@ -23,7 +23,6 @@ use libc::{sysctl, CTL_HW};
 #[derive(Default, Debug, Copy, Clone)]
 pub struct SMCBytes([u8; 32]); // 32
 
-// "ch8*", "char", "flag", "flt ", "fp1f", "fp6a", "fp79", "fp88", "fpe2", "hex_", "si16", "si8 ", "sp1e", "sp2d", "sp3c", "sp4b", "sp5a", "sp69", "sp78", "sp87", "ui16", "ui32", "ui8 ", "{alc", "{ali", "{alp", "{alv", "{fds", "{hdi", "{lim", "{lkb", "{lks", "{mss", "{rev"
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq)]
 #[repr(C)]
 pub struct DataType {
@@ -584,7 +583,7 @@ impl SMC {
             .smc_keys()?
             .into_iter()
             .filter_map(|k| {
-                if k.code.to_string().starts_with("T") && k.info.id == TYPE_SP78 {
+                if k.code.to_string().starts_with("T") && (k.info.id == TYPE_SP78 || k.info.id == TYPE_FLT) {
                     Some(k.code)
                 } else {
                     None
@@ -608,7 +607,7 @@ impl SMC {
         if key.to_string().starts_with("T") {
             let info = self.0.key_information(key)?;
 
-            if info.id == TYPE_SP78 {
+            if info.id == TYPE_SP78 || info.id == TYPE_FLT {
                 self.0.read_key(key)
             } else {
                 Err(SMCError::KeyNotFound(key))
